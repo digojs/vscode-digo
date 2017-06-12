@@ -1,2 +1,2 @@
 # vscode-digo
-VSCode 插件：digo 任务管理
+List and run digo tasks in digo in vscode.

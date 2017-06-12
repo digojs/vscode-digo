@@ -1,0 +1,43 @@
+{
+    "name": "vscode-digo",
+    "displayName": "digo",
+    "description": "List and run digo tasks",
+    "version": "0.0.1",
+    "publisher": "xuld",
+    "engines": {
+        "vscode": "^1.12.0"
+    },
+    "categories": [
+        "Extension Packs"
+    ],
+    "keywords": [
+        "digo",
+        "task runner"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "preview": true,
+    "icon": "logo.png",
+    "repository": "https://github.com/digojs/vscode-digo",
+    "main": "./extension",
+    "contributes": {
+        "problemMatchers": [
+            {
+                "name": "digo",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}"
+                ],
+                "pattern": {
+                    "regexp": "^(error|warning) \\d+: (?:\\[.*\\])?(.*)\\((\\d+),(\\d+)\\): (.*)$",
+                    "severity": 1,
+                    "file": 2,
+                    "line": 3,
+                    "column": 4,
+                    "message": 5
+                }
+            }
+        ]
+    }
+}
