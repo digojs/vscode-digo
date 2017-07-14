@@ -33,11 +33,12 @@ function getDigoTasks() {
                 let problemMatcher = vscode.workspace.getConfiguration('digo').get('problemMatcher') || "$digo";
                 if (problemMatcher == "default") problemMatcher = undefined;
                 const result = [];
+                const hasDefault = { __proto__: null };
                 for (const taskName of taskNames) {
                     const task = new vscode.Task({
                         type: 'digo',
                         script: taskName
-                    }, `${taskName}`, 'digo', new vscode.ShellExecution(`digo ${taskName}`), problemMatcher);
+                    }, `${taskName}`, 'digo', appendCurrentFile(new vscode.ShellExecution(`digo ${taskName}`)), problemMatcher);
                     if (['build', 'compile', 'watch', 'publish', 'dist', 'release'].indexOf(taskName) >= 0) {
                         task.group = vscode.TaskGroup.Build;
                     } else if (['test', 'launch', 'open', 'start'].indexOf(taskName) >= 0) {
@@ -62,10 +63,32 @@ function getDigoTasks() {
     });
 }
 
+function appendCurrentFile(task) {
+    let commandLine = task.commandLine;
+    return Object.defineProperty(task, "commandLine", {
+        get() {
+            const file = getCurrentFile();
+            if (file) {
+                return `${commandLine} "${file}"`;
+            }
+            return commandLine;
+        },
+        set(value) {
+            commandLine = value;
+        }
+    });
+}
+
 function parseDigoFile(content) {
     const result = [];
     content.replace(/exports\.(\w+)\s*=/g, (all, word) => {
         result.push(word);
     });
     return result;
+}
+
+function getCurrentFile() {
+    if (vscode.window.activeTextEditor) {
+        return vscode.window.activeTextEditor.document.fileName;
+    }
 }
