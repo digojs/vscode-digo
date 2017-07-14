@@ -2,7 +2,7 @@
     "name": "digo",
     "displayName": "digo",
     "description": "List and run digo tasks",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "xuld",
     "engines": {
         "vscode": "^1.12.0"

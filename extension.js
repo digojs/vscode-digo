@@ -38,12 +38,21 @@ function getDigoTasks() {
                         type: 'digo',
                         script: taskName
                     }, `${taskName}`, 'digo', new vscode.ShellExecution(`digo ${taskName}`), problemMatcher);
-                    if (['build', 'compile', 'watch', 'publish', 'dist', 'release'].indexOf(taskName)) {
+                    if (['build', 'compile', 'watch', 'publish', 'dist', 'release'].indexOf(taskName) >= 0) {
                         task.group = vscode.TaskGroup.Build;
-                    } else if (['test', 'lauch'].indexOf(taskName)) {
-                        task.group = vscode.TaskGroup.Test;
-                    } else if (['clean'].indexOf(taskName)) {
+                    } else if (['test', 'launch', 'open', 'start'].indexOf(taskName) >= 0) {
+                        task.group = new vscode.TaskGroup("test", "Test");
+                    } else if (['clean'].indexOf(taskName) >= 0) {
                         task.group = vscode.TaskGroup.Clean;
+                    }
+                    if (['watch', 'server', 'default', 'open', 'start'].indexOf(taskName) >= 0) {
+                        task.isBackground = true;
+                    }
+                    if (['launch', 'open', 'start'].indexOf(taskName) >= 0) {
+                        task.presentationOptions = {
+                            focus: false,
+                            reveal: vscode.TaskRevealKind.Silent
+                        };
                     }
                     result.push(task);
                 }
